@@ -141,11 +141,8 @@ class OpenAIMCPChatBot:
 
 # Usage example
 async def main():
+    Config.LLM_PROVIDER = "openai"
     Config.validate()
-    if Config.LLM_PROVIDER != "openai":
-        print("This example requires LLM_PROVIDER=openai in .env")
-        return
-
     chatbot = OpenAIMCPChatBot(api_key=Config.OPENAI_API_KEY)
     try:
         await chatbot.connect_to_servers()

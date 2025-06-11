@@ -24,14 +24,14 @@ class Customer(BaseModel):
     account_status: str = "active"
     last_interaction: Optional[datetime] = None
 
-    @field_validator("email", mode='after') # noqa
+    @field_validator("email", mode="after")  # noqa
     @classmethod
     def email_must_be_valid(cls, v: str) -> str:
         if "@" not in v:
             raise PydanticCustomError(
-                'invalid_email',
-                'Invalid email format: {email} must contain @',
-                {'email': v},
+                "invalid_email",
+                "Invalid email format: {email} must contain @",
+                {"email": v},
             )
         return v
 
@@ -42,15 +42,15 @@ class TicketRequest(BaseModel):
     description: str
     priority: str = "normal"
 
-    @field_validator("priority", mode='after') # noqa
+    @field_validator("priority", mode="after")  # noqa
     @classmethod
     def priority_must_be_valid(cls, v: str) -> str:
         valid_priorities = ["low", "normal", "high", "urgent"]
         if v not in valid_priorities:
             raise PydanticCustomError(
-                'invalid_priority',
-                'Priority must be one of: {valid_priorities}, got {priority}',
-                {'valid_priorities': ', '.join(valid_priorities), 'priority': v},
+                "invalid_priority",
+                "Priority must be one of: {valid_priorities}, got {priority}",
+                {"valid_priorities": ", ".join(valid_priorities), "priority": v},
             )
         return v
 

@@ -1,6 +1,7 @@
 """LiteLLM integration with MCP server."""
 
 import asyncio
+import json
 
 import litellm
 from litellm import experimental_mcp_client
@@ -43,19 +44,75 @@ async def setup_litellm_mcp():
             for model in models_to_test:
                 try:
                     print(f"\nTesting with {model}...")
+
+                    # Initial conversation
+                    messages = [
+                        {
+                            "role": "user",
+                            "content": "Customer 67890 recently purchases were $150, $300, $13 and $89. "
+                            "Calculate their total account value.",
+                        }
+                    ]
+
+                    # First call to get tool requests
                     response = await litellm.acompletion(
                         model=model,
-                        messages=[
-                            {
-                                "role": "user",
-                                "content": "Get customer 12345 information",
-                            }
-                        ],
+                        messages=messages,
                         tools=tools,
                     )
-                    # Extract just the message content
-                    content = response.choices[0].message.content
-                    print(f"🤖 Response: {content}")
+
+                    # Extract the response
+                    message = response.choices[0].message
+
+                    # Check if the model made tool calls
+                    if hasattr(message, "tool_calls") and message.tool_calls:
+                        print(f"🔧 Tool calls made: {len(message.tool_calls)}")
+
+                        # Add assistant's message with tool calls to conversation
+                        messages.append(
+                            {
+                                "role": "assistant",
+                                "content": message.content,
+                                "tool_calls": message.tool_calls,
+                            }
+                        )
+
+                        # Execute each tool call
+                        for call in message.tool_calls:
+                            print(f"   - Executing {call.function.name}")
+
+                            # Execute the tool through MCP
+                            arguments = json.loads(call.function.arguments)
+                            result = await session.call_tool(
+                                call.function.name, arguments
+                            )
+
+                            # Add tool result to conversation
+                            messages.append(
+                                {
+                                    "role": "tool",
+                                    "content": str(result.content),
+                                    "tool_call_id": call.id,
+                                }
+                            )
+
+                        # Get final response from model with tool results
+                        final_response = await litellm.acompletion(
+                            model=model,
+                            messages=messages,
+                            tools=tools,
+                        )
+
+                        final_content = final_response.choices[0].message.content
+                        print(f"🤖 Final Response: {final_content}")
+
+                    else:
+                        # Display content if available (no tools called)
+                        if message.content:
+                            print(f"🤖 Response: {message.content}")
+                        else:
+                            print("🤖 Response: (No response)")
+
                 except Exception as e:
                     print(f"Error with {model}: {e}")
 

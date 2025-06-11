@@ -56,14 +56,14 @@ async def run_customer_service_scenarios():
             response = await agent.ainvoke(
                 {"messages": [{"role": "user", "content": scenario}]}
             )
-            
+
             # Extract the final AI response
-            final_message = response['messages'][-1]
-            if hasattr(final_message, 'content'):
+            final_message = response["messages"][-1]
+            if hasattr(final_message, "content"):
                 print(f"🤖 Response: {final_message.content}")
             else:
                 print(f"🤖 Response: {final_message}")
-                
+
         except Exception as e:
             print(f"❌ Error: {e}")
 
@@ -73,9 +73,6 @@ async def run_customer_service_scenarios():
 async def main():
     """Main entry point."""
     Config.validate()
-    if Config.LLM_PROVIDER != "openai":
-        print("LangChain example requires OpenAI. Set LLM_PROVIDER=openai in .env")
-        return
 
     await run_customer_service_scenarios()
 

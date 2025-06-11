@@ -146,10 +146,8 @@ class AnthropicMCPChatBot:
 
 # Usage example
 async def main():
+    Config.LLM_PROVIDER = "anthropic"
     Config.validate()
-    if Config.LLM_PROVIDER != "anthropic":
-        print("This example requires LLM_PROVIDER=anthropic in .env")
-        return
 
     chatbot = AnthropicMCPChatBot(api_key=Config.ANTHROPIC_API_KEY)
     try:

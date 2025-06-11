@@ -36,6 +36,22 @@ tasks:
     cmds:
       - poetry run python src/langchain_integration.py
 
+  run-langchain-claude:
+    desc: "Run LangChain integration example with Claude"
+    cmds:
+      - poetry run python src/langchain_integration.py
+    env:
+      LLM_PROVIDER: anthropic
+      LLM_MODEL: claude-sonnet-4-20250514
+
+  run-langchain-gemma:
+    desc: "Run LangChain integration example with Gemma"
+    cmds:
+      - poetry run python src/langchain_integration.py
+    env:
+      LLM_PROVIDER: ollama
+      LLM_MODEL: gemma3:27b
+
   run-dspy:
     desc: "Run DSPy integration example"
     cmds:
@@ -45,6 +61,22 @@ tasks:
     desc: "Run LiteLLM integration example"
     cmds:
       - poetry run python src/litellm_integration.py
+
+  run-litellm-claude:
+    desc: "Run LiteLLM integration example with Claude"
+    cmds:
+      - poetry run python src/litellm_integration.py
+    env:
+      LLM_PROVIDER: anthropic
+      LLM_MODEL: claude-sonnet-4-20250514
+
+  run-litellm-gemma:
+    desc: "Run LiteLLM integration example with Gemma"
+    cmds:
+      - poetry run python src/litellm_integration.py
+    env:
+      LLM_PROVIDER: ollama
+      LLM_MODEL: gemma3:27b
 
   test:
     desc: "Run tests"
