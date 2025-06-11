@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "customer-service": {
+      "command": "poetry",
+      "args": ["run", "python", "src/main.py"]
+    }
+  }
+}

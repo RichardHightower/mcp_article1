@@ -1,0 +1,103 @@
+version: '3'
+
+tasks:
+  default:
+    desc: "Default task - runs all tasks"
+    cmds:
+      - task: all
+
+  setup:
+    desc: "Set up the Python environment"
+    cmds:
+      - pyenv install -s 3.12.9
+      - pyenv local 3.12.9
+      - poetry install
+      - poetry config virtualenvs.in-project true
+      - chmod +x .venv/bin/activate
+      - source .venv/bin/activate
+
+  run:
+    desc: "Run the MCP server"
+    cmds:
+      - poetry run python src/main.py
+
+  run-openai:
+    desc: "Run OpenAI integration example"
+    cmds:
+      - poetry run python src/openai_integration.py
+
+  run-anthropic:
+    desc: "Run Anthropic integration example"
+    cmds:
+      - poetry run python src/anthropic_integration.py
+
+  run-langchain:
+    desc: "Run LangChain integration example"
+    cmds:
+      - poetry run python src/langchain_integration.py
+
+  run-dspy:
+    desc: "Run DSPy integration example"
+    cmds:
+      - poetry run python src/dspy_integration.py
+
+  run-litellm:
+    desc: "Run LiteLLM integration example"
+    cmds:
+      - poetry run python src/litellm_integration.py
+
+  test:
+    desc: "Run tests"
+    cmds:
+      - poetry run pytest tests/ -v
+
+  format:
+    desc: "Format code"
+    cmds:
+      - poetry run black src/ tests/
+      - poetry run ruff check --fix src/ tests/
+      - poetry run isort src/ tests/
+
+  clean:
+    desc: "Clean up generated files"
+    cmds:
+      - find . -type d -name "__pycache__" -exec rm -rf {} +
+      - find . -type f -name "*.pyc" -delete
+      - rm -rf .pytest_cache
+      - rm -rf .ruff_cache
+
+  update-deps:
+    desc: "Update all poetry dependencies to their latest versions"
+    cmds:
+      - poetry update
+      - poetry show --outdated
+
+  upgrade-deps:
+    desc: "Show outdated dependencies (use poetry add package@latest to upgrade)"
+    cmds:
+      - echo "Checking for outdated dependencies..."
+      - poetry show --outdated
+      - echo ""
+      - echo "To upgrade a specific package use poetry add package@latest"
+      - echo "To upgrade all use poetry update"
+
+  fix-poetry:
+    desc: "Fix poetry lock file and dependency issues"
+    cmds:
+      - rm -f poetry.lock
+      - poetry lock --no-update
+      - poetry install
+
+  poetry-check:
+    desc: "Check poetry configuration and dependencies"
+    cmds:
+      - poetry check
+      - poetry show --tree
+
+  all:
+    desc: "Run all tasks"
+    cmds:
+      - task: setup
+      - task: format
+      - task: test
+      - task: run
