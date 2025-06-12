@@ -8,7 +8,7 @@ Learn how to build standardized AI integrations that work across multiple platfo
 
 - Build MCP servers with FastMCP framework
 - Create resources, tools, and prompts for AI models
-- Integrate with Claude Desktop, OpenAI, Anthropic, LangChain, DSPy, and LiteLLM
+- Integrate with Claude Desktop, OpenAI, OpenAI Agent SDK, Anthropic, LangChain, DSPy, and LiteLLM
 - Implement async operations for high performance
 - Use Pydantic for data validation and type safety
 
@@ -65,8 +65,9 @@ Learn how to build standardized AI integrations that work across multiple platfo
 │   ├── __init__.py
 │   ├── config.py                 # LLM configuration
 │   ├── main.py                   # MCP server implementation
-│   ├── openai_integration.py     # OpenAI MCP integration
-│   ├── anthropic_integration.py  # Anthropic MCP integration
+│   ├── openai_integration.py        # OpenAI MCP integration
+│   ├── openai_agents_integration.py # OpenAI Assistant MCP integration
+│   ├── anthropic_integration.py     # Anthropic MCP integration
 │   ├── langchain_integration.py  # LangChain MCP integration
 │   ├── dspy_integration.py       # DSPy MCP integration
 │   └── litellm_integration.py    # LiteLLM MCP integration
@@ -99,6 +100,7 @@ Or run individual integration examples:
 
 ```bash
 task run-openai          # OpenAI integration
+task run-openai-agents   # OpenAI Assistant integration
 task run-anthropic       # Anthropic integration
 task run-langchain       # LangChain integration
 task run-dspy           # DSPy integration
@@ -110,6 +112,7 @@ Direct Python execution:
 ```bash
 poetry run python src/main.py
 poetry run python src/openai_integration.py
+poetry run python src/openai_agents_integration.py
 poetry run python src/anthropic_integration.py
 ```
 

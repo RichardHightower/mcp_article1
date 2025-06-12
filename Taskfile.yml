@@ -26,6 +26,11 @@ tasks:
     cmds:
       - poetry run python src/openai_integration.py
 
+  run-openai-agents:
+    desc: "Run OpenAI Agent integration example"
+    cmds:
+      - poetry run python src/openai_agents_integration.py
+
   run-anthropic:
     desc: "Run Anthropic integration example"
     cmds:
