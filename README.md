@@ -120,6 +120,60 @@ poetry run python src/anthropic_integration.py
 - `task test` - Run unit tests
 - `task format` - Format code with Black and Ruff
 - `task clean` - Clean up generated files
+- `task build` - Build the package for distribution
+- `task install-global` - Install the package globally for use with uvx
+- `task install-claude` - Install and show Claude Desktop configuration
+
+## Installation for Claude Desktop
+
+### Quick Setup
+
+1. **Clone and setup the project**:
+   ```bash
+   git clone <repository-url>
+   cd mcp_article1
+   task setup  # or: poetry install
+   ```
+
+2. **Get Claude Desktop configuration**:
+   ```bash
+   task install-claude
+   ```
+
+3. **Add the configuration to Claude Desktop**:
+   
+   The configuration will use a shell script wrapper:
+   ```json
+   {
+     "mcpServers": {
+       "customer-service": {
+         "command": "/path/to/mcp_article1/run-mcp-server.sh"
+       }
+     }
+   }
+   ```
+
+4. **Restart Claude Desktop** to load the MCP server
+
+### Why the Shell Script?
+
+The `run-mcp-server.sh` script ensures:
+- The correct working directory is set
+- The virtual environment is activated
+- All dependencies are available
+- The server runs in the proper context
+
+### Troubleshooting Claude Desktop Integration
+
+If the server doesn't appear in Claude Desktop:
+
+1. **Check the logs**: Look for errors in Claude Desktop's developer console
+2. **Test the script manually**: 
+   ```bash
+   ./run-mcp-server.sh
+   ```
+3. **Verify the path**: Make sure the command path in the config is absolute
+4. **Check permissions**: Ensure the script is executable (`chmod +x run-mcp-server.sh`)
 
 ## Virtual Environment Setup Instructions
 

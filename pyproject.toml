@@ -6,6 +6,9 @@ authors = ["Your Name <you@example.com>"]
 readme = "README.md"
 packages = [{include = "src"}]
 
+[tool.poetry.scripts]
+mcp-customer-service = "src.main:main"
+
 [tool.poetry.dependencies]
 python = ">=3.12,<3.13"
 fastmcp = "^2.8.0"

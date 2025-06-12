@@ -126,6 +126,37 @@ tasks:
       - poetry check
       - poetry show --tree
 
+  build:
+    desc: "Build the package for distribution"
+    cmds:
+      - poetry build
+      - echo "Package built in dist/ directory"
+
+  install-global:
+    desc: "Install the package globally for use with uvx"
+    cmds:
+      - poetry build
+      - pip install dist/mcp_customer_service-0.1.0-py3-none-any.whl --force-reinstall
+      - echo "Package installed globally"
+      - echo "You can now use uvx mcp-customer-service"
+
+  install-claude:
+    desc: "Show configuration for Claude Desktop"
+    cmds:
+      - chmod +x run-mcp-server.sh
+      - echo "Add this to your Claude Desktop config:"
+      - echo ""
+      - |
+        cat << EOF
+        {
+          "mcpServers": {
+            "customer-service": {
+              "command": "$(pwd)/run-mcp-server.sh"
+            }
+          }
+        }
+        EOF
+
   all:
     desc: "Run all tasks"
     cmds:
